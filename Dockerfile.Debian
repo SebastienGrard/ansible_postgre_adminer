@@ -1,0 +1,27 @@
+FROM   debian:latest
+
+ ARG   ANSIBLE_PWD=Ansible
+ 
+ RUN   apt-get update && apt upgrade -y
+ RUN   apt install -y openssh-server python3 sudo python3-apt vim tzdata inetutils-ping net-tools iproute2 && apt clean ; rm -rf /var/lib/apt/lists/*
+
+ RUN   useradd -m -s /bin/bash ansible && \
+       echo 'ansible:${ANSIBLE_PWD}' | chpasswd && \
+       echo "ansible ALL=(ALL:ALL) NOPASSWD:ALL" >> /etc/sudoers
+ RUN   mkdir /home/ansible/.ssh && chown ansible:ansible /home/ansible/.ssh
+ 
+ ENV   TZ=Europe/Paris
+ RUN   ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
+
+ RUN   echo 'alias ll="ls -l --color"' >> /etc/bash.bashrc
+ RUN   echo "set autoindent" >> /home/ansible/.vimrc && \
+       echo "set softtabstop=3" >> /home/ansible/.vimrc && \
+       echo "colorscheme industry" >> /home/ansible/.vimrc && \
+       echo "set expandtab" >> /home/ansible/.vimrc
+
+ HEALTHCHECK --start-period=10s --interval=3m --timeout=3s --retries=5 CMD netstat -nlp | grep -qE "LISTEN.*sshd" || exit 1
+
+ RUN   mkdir -p /run/sshd
+ CMD   ["/usr/sbin/sshd", "-D", "-E", "/var/log/sshd.log"]
+
+ EXPOSE 22

@@ -1,0 +1,13 @@
+- name: "Démarrer et activer MariaDB"
+  tags: MariaDB
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: "Assurer que MariaDB est en cours d'exécution"
+  tags: MariaDB
+  ansible.builtin.shell: "mysqladmin ping"
+  register: mariadb_status
+  failed_when: "'mysqld is alive' not in mariadb_status.stdout"
+

@@ -1,0 +1,6 @@
+all:
+  hosts:
+    Debiantest:
+      ansible_host: localhost
+      ansible_port: 55422
+      ansible_user: ansible

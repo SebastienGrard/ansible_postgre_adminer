@@ -1,0 +1,68 @@
+---
+- hosts: all
+  become: yes
+
+  vars_files:
+    - vars/main.yml
+
+  handlers:
+    - import_tasks: handlers/main.yml
+
+  pre_tasks:
+    - name: "Update system on Debian"
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+      tags: "Update"
+
+    - name: "Install required MariaDB packages"
+      apt:
+        name:
+          - mariadb-server
+          - python3-pymysql
+        state: present
+        update_cache: yes
+      tags: "MariaDB"
+
+    - name: "Installer Apache et PHP"
+      apt:
+        name:
+          - apache2
+          - php
+          - php-mbstring
+          - php-xml
+          - libapache2-mod-php
+          - wget
+        state: present
+        update_cache: yes
+      tags: "Apache2"
+
+    - name: Télécharger Adminer
+      get_url:
+        url: https://www.adminer.org/latest.php
+        dest: /var/www/html/adminer.php
+        mode: '0644'
+      tags: "Adminer"
+
+  tasks:
+
+    - name: "Install and Start Apache on Debian"
+      include_tasks: tasks/apache.yml
+      tags: "Apache2"
+
+    - name: "Check if MariaDB data directory exists"
+      include_tasks: tasks/initmariadb.yml
+      tags: "MariaDB"
+
+    - name: "Create app database"
+      include_tasks: tasks/createmariadb.yml
+      tags: "MariaDB"
+
+    - name: "Exécuter le script SQL"
+      include_tasks: tasks/scriptmariadb.yml
+      tags: "MariaDB"
+
+    - name: "Configurer Apache"
+      include_tasks: tasks/adminer.yml       
+      tags: "Adminer" 
