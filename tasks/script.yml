@@ -1,0 +1,6 @@
+- name: "Exécuter le script SQL"
+  community.postgresql.postgresql_script:
+    db: "{{ db_name }}"
+    login_user: "{{ db_user }}"
+    path: "/tmp/sqldb.sql"
+  become_user: postgres

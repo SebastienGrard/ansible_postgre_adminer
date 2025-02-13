@@ -1,0 +1,23 @@
+- name: "Install and Start Apache on Debian"
+  apt:
+    name: apache2
+    state: present
+
+- name: "Demarrer Apache2 en arrière-plan"
+  command: "apache2ctl -D FOREGROUND"
+  async: 3600
+  poll: 0
+
+- name: "Copier le fichier index.html"
+  copy:
+     src: index.html
+     dest: /var/www/html/index.html
+     owner: www-data
+     group: www-data
+     mode: '0644'
+
+- name: "Check Apache2"
+  apt:
+    name: apache2
+    state: present
+  notify: Restart Apache2

@@ -1,0 +1,11 @@
+- name: Restart Apache2
+  ansible.builtin.command: "/etc/init.d/apache2 restart"
+
+- name: Check Apache2
+  apt:
+    name: apache2
+    state: present
+
+- name: Restart PostgreSQL
+  ansible.builtin.command: "/etc/init.d/postgresql restart"
+  become: true

@@ -1,0 +1,11 @@
+- name: Dump PostgreSQL database into a file
+  ansible.builtin.command: >
+    bash -c "pg_dump -U {{ db_user }} -h localhost -p 5432 -d {{ db_name }} | gzip > /tmp/{{ db_name }}_$(date +%Y%m%d%H%M%S).sql.gz"
+  environment:
+    PGPASSWORD: "{{ db_password }}"
+  register: dump_result
+  ignore_errors: no  # Stop en cas d'erreur
+
+- name: Show dump result
+  debug:
+    var: dump_result.stdout

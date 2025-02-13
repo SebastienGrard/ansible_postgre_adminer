@@ -1,0 +1,23 @@
+- name: "Configurer Apache"
+  copy:
+    dest: /etc/apache2/sites-available/adminer.conf
+    content: |
+      <VirtualHost *:80>
+          DocumentRoot /var/www/html
+          <Directory /var/www/html>
+              AllowOverride All
+              Require all granted
+           </Directory>
+       </VirtualHost>
+
+- name: Activer la configuration Adminer
+  command: a2ensite adminer.conf
+  notify: Restart Apache2
+
+- name: Désactiver le site par défaut
+  command: a2dissite 000-default.conf
+  notify: Restart Apache2
+
+- name: Activer le module Rewrite
+  command: a2enmod rewrite
+  notify: Restart Apache2
