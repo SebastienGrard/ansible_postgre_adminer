@@ -5,7 +5,9 @@
     PGPASSWORD: "{{ db_password }}"
   register: dump_result
   ignore_errors: no  # Stop en cas d'erreur
+  tags: DumpSQL
 
 - name: Show dump result
   debug:
     var: dump_result.stdout
+  tags: DumpSQL

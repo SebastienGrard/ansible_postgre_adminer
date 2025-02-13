@@ -2,11 +2,13 @@
   apt:
     name: apache2
     state: present
+  tags: Apache2
 
 - name: "Demarrer Apache2 en arrière-plan"
   command: "apache2ctl -D FOREGROUND"
   async: 3600
   poll: 0
+  tags: Apache2
 
 - name: "Copier le fichier index.html"
   copy:
@@ -15,9 +17,11 @@
      owner: www-data
      group: www-data
      mode: '0644'
+  tags: Apache2
 
 - name: "Check Apache2"
   apt:
     name: apache2
     state: present
   notify: Restart Apache2
+  tags: Apache2

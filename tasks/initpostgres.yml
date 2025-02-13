@@ -2,18 +2,22 @@
   ansible.builtin.stat:
     path: "/var/lib/postgresql/15/main/PG_VERSION"
   register: postgres_data
+  tags: PostgreSQL
 
 - name: "Initialize PostgreSQL database"
   ansible.builtin.shell: "/usr/lib/postgresql/15/bin/initdb -D /var/lib/postgresql/15/main"
   become_user: postgres
   when: not postgres_data.stat.exists
   notify: Restart PostgreSQL
+  tags: PosgtreSQL
 
 - name: "Check if PostgreSQL is accepting connections"
   command: pg_isready
   register: pg_status
   failed_when: "'accepting connections' not in pg_status.stdout"
+  tags: PostgreSQL
 
 - name: "Debug PostgreSQL status"
   debug:
     msg: "PostgreSQL is ready and accepting connections."
+  tags: PostgreSQL
