@@ -1,4 +1,5 @@
 - name: "Configurer Apache"
+  tags: Adminer
   copy:
     dest: /etc/apache2/sites-available/adminer.conf
     content: |
@@ -13,11 +14,14 @@
 - name: Activer la configuration Adminer
   command: a2ensite adminer.conf
   notify: Restart Apache2
+  tags: Adminer
 
 - name: Désactiver le site par défaut
   command: a2dissite 000-default.conf
   notify: Restart Apache2
+  tags: Adminer
 
 - name: Activer le module Rewrite
   command: a2enmod rewrite
   notify: Restart Apache2
+  tags: Adminer

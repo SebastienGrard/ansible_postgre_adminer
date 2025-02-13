@@ -4,3 +4,4 @@
     login_user: "{{ db_user }}"
     path: "/tmp/sqldb.sql"
   become_user: postgres
+  tags: PostgreSQL

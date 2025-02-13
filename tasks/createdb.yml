@@ -4,6 +4,7 @@
     name: "{{ db_name }}"
   become: yes
   become_user: postgres
+  tags: PostgreSQL
 
 - name: "Create db user"
   postgresql_user:
@@ -12,6 +13,7 @@
     password: "{{ db_password }}"
   become: yes
   become_user: postgres
+  tags: PostgreSQL
 
 - name: "Grant db user access to app db"
   postgresql_privs:
@@ -22,9 +24,11 @@
     privs: all
   become: yes
   become_user: postgres
+  tags: PostgreSQL
 
 - name: "Copier le script SQL sur la machine cible"
   copy:
     src: "database/sqldb.sql"
     dest: "/tmp/sqldb.sql"
     mode: '0644'
+  tags: PostgreSQL
