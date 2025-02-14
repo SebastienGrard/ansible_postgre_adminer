@@ -13,7 +13,7 @@ Exécute les commandes suivantes :
 
 ```sh
 docker build -f Dockerfile.Debian -t debian:2.0 .
-docker run -dti --name Debiantest -p 55422:22 debian:2.0
+docker run -dti --name Debiantest -p 55422:22 -p 8080:80 debian:2.0
 ```
 
 - Les informations du conteneur sont renseignées dans le fichier `inventory/hosts`.  
@@ -21,7 +21,7 @@ docker run -dti --name Debiantest -p 55422:22 debian:2.0
 
 ### 2⃣ Vérification d'Ansible  
 
-Assure-toi qu'Ansible est bien installé en exécutant :  
+Assure-toi qu'Ansible est bien installé sur le serveur en exécutant :  
 
 ```sh
 ansible --version
@@ -33,9 +33,7 @@ Entre dans le conteneur avec :
 
 ```sh
 docker exec -it <CONTAINER_ID> /bin/bash
-```
-
-Puis, suis la documentation fournie par le formateur pour la création du compte **ansible**.  
+``` 
 
 ### 4⃣ Configuration SSH dans le conteneur  
 
@@ -97,8 +95,8 @@ Tags disponibles :
 |-----------|-----------------|
 | `Update`  | Mise à jour du système |
 | `Apache2` | Installation d'Apache |
-| `PostgreSQL` | Installation de PostgreSQL |
-| `DumpSQL` | Importation d'une base de données |
+| `MariaDB` | Installation de MariaDB |
+| `DumpSQL` | Sauvegarde d'une base de données |
 | `Adminer` | Installation d'Adminer |
 
 ---
@@ -111,9 +109,13 @@ Dans le conteneur, exécute :
 curl http://localhost/adminer.php
 ```
 
-Si tout est bien configuré, Adminer doit être accessible via :  
+Si tout est bien configuré, Adminer doit être accessible via le serveur :  
 
 ```
-http://<IP_DU_CONTAINER>/adminer.php
+http://localhost/adminer.php:8080
+```
+Le site internet via Apache2 :
+```
+http://localhost:8080
 ```
 
