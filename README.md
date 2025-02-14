@@ -17,7 +17,7 @@ docker run -dti --name Debiantest -p 55422:22 -p 8080:80 debian:2.0
 ```
 
 - Les informations du conteneur sont renseignées dans le fichier `inventory/hosts`.  
-- L'utilisateur par défaut qui travaillera sur le conteneur est **"ansible"**.  
+- L'utilisateur qui travaillera sur le conteneur est **"ansible"**.  
 
 ### 2⃣ Vérification d'Ansible  
 
