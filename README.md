@@ -37,11 +37,11 @@ docker exec -it <CONTAINER_ID> /bin/bash
 
 ### 4⃣ Configuration SSH dans le conteneur  
 
-Installe et configure SSH :  
+Installe et configure SSH SI CE N'EST PAS INSTALLE sur le container :  
 
 ```sh
 apt update
-apt install -y ssh net-tools python3 sudo vim -y
+apt install -y ssh
 /etc/init.d/ssh restart
 ```
 
