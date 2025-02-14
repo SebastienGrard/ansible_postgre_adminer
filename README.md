@@ -42,25 +42,25 @@ Puis, suis la documentation fournie par le formateur pour la création du compte
 Installe et configure SSH :  
 
 ```sh
-sudo apt update
-sudo apt install -y ssh net-tools
+apt update
+apt install -y ssh net-tools python3 sudo vim -y
 /etc/init.d/ssh restart
 ```
 
 ### 5⃣ Ajout des utilisateurs sudoers  
 
-Ajoute **ansible** et **postgres** dans les sudoers :  
+Ajoute **ansible** dans les sudoers :  
 
 ```sh
-sudo apt install -y vim
-sudo visudo
+visudo
+useradd -m -s /bin/bash ansible
+passwd ansible
 ```
 
 Dans le fichier qui s'ouvre, ajoute les lignes suivantes :  
 
 ```
 ansible ALL=(ALL) NOPASSWD:ALL
-postgres ALL=(ALL) NOPASSWD:ALL
 ```
 
 ### 6⃣ Transfert de la clé SSH  
